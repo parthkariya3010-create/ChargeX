@@ -1,23 +1,14 @@
 -- ============================================================
--- CHARGEX - All India Sample EV Charging Stations
--- Covers major cities across all states and UTs
--- This file is self-contained (clears old data first)
+-- CHARGEX - All India EV Charging Stations
+-- Adds stations across all major Indian cities
+-- Skips stations that already exist in the database
 -- ============================================================
-
-SET FOREIGN_KEY_CHECKS = 0;
-TRUNCATE TABLE bookings;
-TRUNCATE TABLE ports;
-TRUNCATE TABLE station_amenities;
-TRUNCATE TABLE stations;
-TRUNCATE TABLE vehicles;
-TRUNCATE TABLE users;
-SET FOREIGN_KEY_CHECKS = 1;
 
 -- ============================================================
 -- Mumbai stations
 -- ============================================================
 
-INSERT INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
+INSERT IGNORE INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
 ('stn_001', 'Bandra Kurla Power Hub', 'BKC Connector Road, Bandra East', 'Mumbai', 19.076, 72.870, 1.2, 4.6, NOW()),
 ('stn_002', 'Lower Parel Charge Point', 'Senapati Bapat Marg, Lower Parel', 'Mumbai', 18.997, 72.826, 3.8, 4.3, NOW()),
 ('stn_003', 'Powai Lakeside Station', 'Hiranandani Gardens, Powai', 'Mumbai', 19.120, 72.905, 6.4, 4.8, NOW()),
@@ -31,7 +22,7 @@ INSERT INTO station_amenities (station_id, amenity) VALUES
 ('stn_004', 'Restroom'), ('stn_004', 'Convenience Store'),
 ('stn_005', 'Cafe'), ('stn_005', 'Restroom');
 
-INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
+INSERT IGNORE INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
 ('p1', 'stn_001', 'DC Fast', 60, 18, 'available', 0), ('p2', 'stn_001', 'DC Fast', 60, 18, 'available', 0), ('p3', 'stn_001', 'AC Type 2', 22, 12, 'waiting', 15), ('p4', 'stn_001', 'AC Type 2', 22, 12, 'full', 0),
 ('p1', 'stn_002', 'DC Fast', 50, 19, 'waiting', 25), ('p2', 'stn_002', 'DC Fast', 50, 19, 'full', 0), ('p3', 'stn_002', 'AC Type 2', 22, 11, 'full', 0),
 ('p1', 'stn_003', 'DC Fast', 90, 20, 'available', 0), ('p2', 'stn_003', 'AC Type 2', 22, 12, 'available', 0), ('p3', 'stn_003', 'AC Type 2', 22, 12, 'available', 0),
@@ -42,7 +33,7 @@ INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_m
 -- Delhi NCR stations
 -- ============================================================
 
-INSERT INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
+INSERT IGNORE INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
 ('STATIC12', 'GensolCharge NDSE Grid', 'NDSE Grid, BRPL South Extension', 'Delhi', 28.568238, 77.219666, 4.1, 3.5, NOW()),
 ('STATIC17', 'BluSmart Nehru Place', 'BSES Bhawan, Nehru Place, New Delhi 110048', 'Delhi', 28.549427, 77.254636, 5.7, 3.5, NOW()),
 ('STATIC18', 'Smart E Uttam Nagar', 'Uttam Nagar East metro station', 'Delhi', 28.626722, 77.065972, 4.2, 3.5, NOW()),
@@ -84,7 +75,7 @@ INSERT INTO station_amenities (station_id, amenity) VALUES
 ('REVBOLT_000476', 'Parking'), ('REVBOLT_003352', 'Parking'), ('REVBOLT_003675', 'Parking'), ('REVBOLT_004758', 'Parking'),
 ('REVBOLT_00009635', 'Parking'), ('REVBOLT_00009635', 'Restroom');
 
-INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
+INSERT IGNORE INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
 ('p1', 'STATIC12', 'DC Fast', 60, 18, 'available', 0), ('p2', 'STATIC12', 'DC Fast', 60, 18, 'available', 0), ('p3', 'STATIC12', 'AC Type 2', 22, 12, 'waiting', 15), ('p4', 'STATIC12', 'AC Type 2', 22, 12, 'full', 0),
 ('p1', 'STATIC17', 'DC Fast', 50, 19, 'waiting', 25), ('p2', 'STATIC17', 'DC Fast', 50, 19, 'full', 0), ('p3', 'STATIC17', 'AC Type 2', 22, 11, 'full', 0),
 ('p1', 'STATIC18', 'DC Fast', 90, 20, 'available', 0), ('p2', 'STATIC18', 'AC Type 2', 22, 12, 'available', 0), ('p3', 'STATIC18', 'AC Type 2', 22, 12, 'available', 0),
@@ -115,7 +106,7 @@ INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_m
 -- South India
 -- ============================================================
 
-INSERT INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
+INSERT IGNORE INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
 ('IND_ALP_001', 'ALP City Centre Charger', 'Near City Centre Charger, ALP', 'ALP', 20, 78, NULL, 4.0, NOW()),
 ('IND_ATP_001', 'ATP City Centre Charger', 'Near City Centre Charger, ATP', 'ATP', 20, 78, NULL, 4.0, NOW()),
 ('IND_BLG_001', 'BLG City Centre Charger', 'Near City Centre Charger, BLG', 'BLG', 20, 78, NULL, 4.0, NOW()),
@@ -263,7 +254,7 @@ INSERT INTO station_amenities (station_id, amenity) VALUES
 ('IND_WGL_001', 'Parking'),
 ('IND_WGL_001', 'Restroom');
 
-INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
+INSERT IGNORE INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
 ('p1', 'IND_ALP_001', 'DC Fast', 50, 17, 'available', 0),
 ('p2', 'IND_ALP_001', 'AC Type 2', 22, 10, 'available', 0),
 ('p1', 'IND_ATP_001', 'DC Fast', 50, 17, 'available', 0),
@@ -365,7 +356,7 @@ INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_m
 -- West India
 -- ============================================================
 
-INSERT INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
+INSERT IGNORE INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
 ('IND_AMD_001', 'Ahmedabad City Centre Charger', 'Near City Centre Charger, Ahmedabad', 'Ahmedabad', 23.0225, 72.5714, NULL, 4.0, NOW()),
 ('IND_AMD_002', 'Ahmedabad Main Road Hub', 'Near Main Road Hub, Ahmedabad', 'Ahmedabad', 23.0255, 72.5744, NULL, 4.0, NOW()),
 ('IND_AMD_003', 'Ahmedabad Railway Station Charger', 'Near Railway Station Charger, Ahmedabad', 'Ahmedabad', 23.0285, 72.5774, NULL, 4.0, NOW()),
@@ -462,7 +453,7 @@ INSERT INTO station_amenities (station_id, amenity) VALUES
 ('IND_SUR_002', 'Parking'),
 ('IND_SUR_002', 'Restroom');
 
-INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
+INSERT IGNORE INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
 ('p1', 'IND_AMD_001', 'DC Fast', 50, 17, 'available', 0),
 ('p2', 'IND_AMD_001', 'AC Type 2', 22, 10, 'available', 0),
 ('p1', 'IND_AMD_002', 'DC Fast', 50, 17, 'available', 0),
@@ -530,7 +521,7 @@ INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_m
 -- North India
 -- ============================================================
 
-INSERT INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
+INSERT IGNORE INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
 ('IND_AGR_001', 'Agra City Centre Charger', 'Near City Centre Charger, Agra', 'Agra', 27.1767, 78.0081, NULL, 4.0, NOW()),
 ('IND_AGR_002', 'Agra Main Road Hub', 'Near Main Road Hub, Agra', 'Agra', 27.1797, 78.0111, NULL, 4.0, NOW()),
 ('IND_AJM_001', 'Ajmer City Centre Charger', 'Near City Centre Charger, Ajmer', 'Ajmer', 26.4499, 74.6399, NULL, 4.0, NOW()),
@@ -702,7 +693,7 @@ INSERT INTO station_amenities (station_id, amenity) VALUES
 ('IND_YN_001', 'Parking'),
 ('IND_YN_001', 'Restroom');
 
-INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
+INSERT IGNORE INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
 ('p1', 'IND_AGR_001', 'DC Fast', 50, 17, 'available', 0),
 ('p2', 'IND_AGR_001', 'AC Type 2', 22, 10, 'available', 0),
 ('p1', 'IND_AGR_002', 'DC Fast', 50, 17, 'available', 0),
@@ -820,7 +811,7 @@ INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_m
 -- East & Central India
 -- ============================================================
 
-INSERT INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
+INSERT IGNORE INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
 ('IND_ASN_001', 'Asansol City Centre Charger', 'Near City Centre Charger, Asansol', 'Asansol', 23.6833, 86.9833, NULL, 4.0, NOW()),
 ('IND_BBS_001', 'Bhubaneswar City Centre Charger', 'Near City Centre Charger, Bhubaneswar', 'Bhubaneswar', 20.2961, 85.8245, NULL, 4.0, NOW()),
 ('IND_BBS_002', 'Bhubaneswar Main Road Hub', 'Near Main Road Hub, Bhubaneswar', 'Bhubaneswar', 20.2991, 85.8275, NULL, 4.0, NOW()),
@@ -926,7 +917,7 @@ INSERT INTO station_amenities (station_id, amenity) VALUES
 ('IND_UJJ_001', 'Parking'),
 ('IND_UJJ_001', 'Restroom');
 
-INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
+INSERT IGNORE INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
 ('p1', 'IND_ASN_001', 'DC Fast', 50, 17, 'available', 0),
 ('p2', 'IND_ASN_001', 'AC Type 2', 22, 10, 'available', 0),
 ('p1', 'IND_BBS_001', 'DC Fast', 50, 17, 'available', 0),
@@ -1000,7 +991,7 @@ INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_m
 -- Northeast & Islands
 -- ============================================================
 
-INSERT INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
+INSERT IGNORE INTO stations (id, name, address, city, latitude, longitude, distance_km, rating, created_at) VALUES
 ('IND_AGT_001', 'Agartala City Centre Charger', 'Near City Centre Charger, Agartala', 'Agartala', 23.8315, 91.2868, NULL, 4.0, NOW()),
 ('IND_AWL_001', 'Aizawl City Centre Charger', 'Near City Centre Charger, Aizawl', 'Aizawl', 23.7271, 92.7176, NULL, 4.0, NOW()),
 ('IND_DBR_001', 'Dibrugarh City Centre Charger', 'Near City Centre Charger, Dibrugarh', 'Dibrugarh', 27.4728, 94.912, NULL, 4.0, NOW()),
@@ -1043,7 +1034,7 @@ INSERT INTO station_amenities (station_id, amenity) VALUES
 ('IND_TSK_001', 'Parking'),
 ('IND_TSK_001', 'Restroom');
 
-INSERT INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
+INSERT IGNORE INTO ports (id, station_id, type, power_kw, price_per_kwh, status, wait_mins) VALUES
 ('p1', 'IND_AGT_001', 'DC Fast', 50, 17, 'available', 0),
 ('p2', 'IND_AGT_001', 'AC Type 2', 22, 10, 'available', 0),
 ('p1', 'IND_AWL_001', 'DC Fast', 50, 17, 'available', 0),

@@ -1,6 +1,6 @@
--- NOTE: all_india_seed.sql (project root) is now self-contained.
--- Run THAT file instead -- it includes all data including Mumbai + Delhi.
--- This file is kept for reference only.
+-- NOTE: Use all_india_seed.sql (in project root) instead -- it has
+-- all stations (Mumbai + Delhi + all-India) and uses INSERT IGNORE
+-- so it can be run safely even if data already exists.
 
 -- ============================================================
 -- Mumbai stations (original 5)
