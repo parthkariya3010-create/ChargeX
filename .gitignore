@@ -1,0 +1,9 @@
+node_modules
+dist
+.env
+.DS_Store
+*.log
+ev-charging-backend/build/
+ev-charging-backend/.gradle/
+ev-charging-backend/gradle/wrapper/gradle-wrapper.jar
+*.zip
