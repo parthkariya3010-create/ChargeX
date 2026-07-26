@@ -1,15 +1,12 @@
-# CHARGEX — EV Charging Booking
+# CHARGEX — EV Charging Booking Platform
 
-A React frontend for an EV charging station booking app: browse stations, see
-live port availability (available / waiting / full with wait time), book a
-charging slot, manage bookings, and edit a driver profile.
+A full-stack EV Charging Station Booking Platform that enables users to discover nearby charging stations across India, view real-time charger availability, compare pricing, reserve charging slots, and manage bookings through a modern, user-friendly interface.
 
 ## Stack
 
-- React 18 + React Router
-- Vite
-- Tailwind CSS
-- lucide-react (icons)
+- **Frontend**: React 18 + React Router + Vite + Tailwind CSS + lucide-react + react-leaflet
+- **Backend**: Kotlin + Ktor + Exposed ORM + MySQL
+- **Maps**: Leaflet with OpenStreetMap tiles, geolocation auto-detect, Haversine distance sorting
 
 ## Getting started
 
@@ -28,44 +25,16 @@ src/
   pages/          Route-level screens (Stations, StationDetail, MyBookings, Profile)
   services/api.js All data access — the ONLY file that talks to data
   data/mockData.js Mock station/booking data used until a real backend is wired up
+ev-charging-backend/
+  src/main/kotlin/com/chargegrid/  Kotlin backend (routes, services, models, config)
+  src/main/resources/seed.sql      MySQL seed data (Mumbai + Delhi stations)
+all_india_seed.sql                  ~215 stations across all major Indian cities
 ```
 
-## Connecting your own backend
+## Features
 
-All data access goes through `src/services/api.js`. Nothing else in the app
-touches mock data directly, so hooking up a real backend is a single-file
-change:
-
-1. Copy `.env.example` to `.env` and set `VITE_API_BASE_URL` to your API's
-   root URL.
-2. In `src/services/api.js`, each exported function already has a commented
-   `fetch(...)` example above its mock implementation. Uncomment it, delete
-   the mock body below, and make sure your endpoint returns the same shape
-   (documented in `src/data/mockData.js`).
-3. Once every function in `api.js` hits your backend, you can delete
-   `src/data/mockData.js`.
-
-### Expected endpoints (suggested)
-
-| Function              | Method & path                                    |
-| ---------------------- | ------------------------------------------------- |
-| `getStations`          | `GET /stations`                                   |
-| `getStationById`       | `GET /stations/:id`                               |
-| `getAvailableSlots`    | `GET /stations/:id/ports/:portId/slots?date=`      |
-| `createBooking`        | `POST /bookings`                                  |
-| `getMyBookings`        | `GET /bookings/me`                                |
-| `cancelBooking`        | `POST /bookings/:id/cancel`                       |
-| `getProfile`           | `GET /profile`                                    |
-| `updateProfile`        | `PUT /profile`                                    |
-
-Station and port status should be one of `available`, `waiting`, or `full`
-(see `STATUS` in `src/services/api.js`). For `waiting`, include a
-`waitMins` estimate.
-
-## Notes
-
-- Bookings and profile are currently persisted to `localStorage` by the mock
-  layer so data survives a refresh during development — remove that once a
-  real backend is connected.
-- Dark, "tech" visual theme with a signature charge-ring gauge showing free
-  ports per station at a glance.
+- Browse EV charging stations across India on an interactive map
+- View live port availability (available / waiting / full with wait time)
+- Book charging slots and manage bookings
+- Driver profile management
+- Dark, "tech" visual theme with signature charge-ring gauge
