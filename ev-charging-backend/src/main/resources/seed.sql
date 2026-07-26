@@ -1,13 +1,6 @@
--- Clear existing data
-DELETE FROM bookings;
-DELETE FROM ports;
-DELETE FROM station_amenities;
-DELETE FROM stations;
-DELETE FROM vehicles;
-DELETE FROM users;
-
--- NOTE: Also run all_india_seed.sql (located in project root) after this file
--- to add sample stations across all major Indian cities.
+-- NOTE: all_india_seed.sql (project root) is now self-contained.
+-- Run THAT file instead -- it includes all data including Mumbai + Delhi.
+-- This file is kept for reference only.
 
 -- ============================================================
 -- Mumbai stations (original 5)
