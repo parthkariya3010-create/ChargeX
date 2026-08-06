@@ -31,6 +31,14 @@ ev-charging-backend/
 all_india_seed.sql                  ~215 stations across all major Indian cities
 ```
 
+## Team Members
+
+**Mentor:** Antariksh Patil Sir
+
+| Name | Roll Number |
+|------|-------------|
+| Parth Kariya | VU2F2425052 |
+
 ## Features
 
 - Browse EV charging stations across India on an interactive map
