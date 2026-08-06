@@ -38,3 +38,4 @@ all_india_seed.sql                  ~215 stations across all major Indian cities
 - Book charging slots and manage bookings
 - Driver profile management
 - Dark, "tech" visual theme with signature charge-ring gauge
+- Theme switching (light / dark / system) with saved preference
