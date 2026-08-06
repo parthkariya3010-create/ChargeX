@@ -3,6 +3,7 @@ import { Search, SlidersHorizontal, Map as MapIcon, List } from 'lucide-react'
 import { getStations, STATUS } from '../services/api'
 import StationCard from '../components/StationCard'
 import MapView from '../components/MapView'
+import { _store as mockStore } from '../data/mockData'
 
 const FILTERS = [
   { key: 'all', label: 'All' },
@@ -10,12 +11,30 @@ const FILTERS = [
   { key: STATUS.WAITING, label: 'Short wait' },
 ]
 
+function decorateStation(station) {
+  const availablePorts = station.ports.filter((port) => port.status === STATUS.AVAILABLE)
+  const waitingPorts = station.ports.filter((port) => port.status === STATUS.WAITING)
+
+  if (availablePorts.length > 0) {
+    return { ...station, status: STATUS.AVAILABLE, waitMins: 0 }
+  }
+
+  if (waitingPorts.length > 0) {
+    const waits = waitingPorts.map((port) => port.waitMins).filter((mins) => mins > 0)
+    const shortestWait = waits.length > 0 ? Math.min(...waits) : 0
+    return { ...station, status: STATUS.WAITING, waitMins: shortestWait }
+  }
+
+  return { ...station, status: STATUS.FULL, waitMins: 0 }
+}
+
 export default function Stations() {
   const [stations, setStations] = useState([])
   const [loading, setLoading] = useState(true)
+  const [errorMessage, setErrorMessage] = useState('')
   const [query, setQuery] = useState('')
   const [filter, setFilter] = useState('all')
-  const [mapView, setMapView] = useState(true)
+  const [mapView, setMapView] = useState(false)
   const [userPosition, setUserPosition] = useState(null)
 
   useEffect(() => {
@@ -30,14 +49,33 @@ export default function Stations() {
 
   useEffect(() => {
     let active = true
-    const lat = userPosition?.lat
-    const lng = userPosition?.lng
-    getStations(lat, lng).then((data) => {
-      if (active) {
-        setStations(data)
-        setLoading(false)
+    async function loadStations() {
+      setLoading(true)
+      setErrorMessage('')
+      const lat = userPosition?.lat
+      const lng = userPosition?.lng
+
+      try {
+        const data = await getStations(lat, lng)
+        if (!active) return
+        setStations(data.map(decorateStation))
+      } catch (error) {
+        if (!active) return
+        setStations(mockStore.getStations().map(decorateStation))
+        setErrorMessage(
+          error instanceof Error
+            ? `${error.message} Showing demo stations for now.`
+            : 'Could not load live stations. Showing demo stations for now.'
+        )
+      } finally {
+        if (active) {
+          setLoading(false)
+        }
       }
-    })
+    }
+
+    loadStations()
+
     return () => {
       active = false
     }
@@ -47,7 +85,7 @@ export default function Stations() {
     return stations
       .filter((s) => (filter === 'all' ? true : s.status === filter))
       .filter((s) => `${s.name} ${s.address}`.toLowerCase().includes(query.toLowerCase()))
-      .sort((a, b) => a.distanceKm - b.distanceKm)
+      .sort((a, b) => (a.distanceKm ?? Number.POSITIVE_INFINITY) - (b.distanceKm ?? Number.POSITIVE_INFINITY))
   }, [stations, query, filter])
 
   return (
@@ -94,6 +132,12 @@ export default function Stations() {
           {mapView ? 'List' : 'Map'}
         </button>
       </div>
+
+      {errorMessage ? (
+        <div className="mb-4 rounded-xl border border-warning/40 bg-warning/10 px-4 py-3 text-sm text-warning">
+          {errorMessage}
+        </div>
+      ) : null}
 
       {loading ? (
         <div className="grid gap-3">
