@@ -2,6 +2,40 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --base: 218 29% 96%;
+  --surface: 220 33% 99%;
+  --elevated: 220 25% 95%;
+  --elevated2: 220 20% 90%;
+  --border: 216 22% 82%;
+  --text-primary: 215 33% 14%;
+  --text-secondary: 215 16% 38%;
+  --accent: 193 90% 58%;
+  --accent2: 254 98% 69%;
+  --success: 145 67% 50%;
+  --warning: 38 100% 56%;
+  --danger: 359 100% 65%;
+  --grid-dot: 216 30% 18%;
+  --shadow-rgb: 216 33% 14%;
+}
+
+[data-theme='dark'] {
+  --base: 219 34% 6%;
+  --surface: 218 30% 11%;
+  --elevated: 216 28% 15%;
+  --elevated2: 215 25% 19%;
+  --border: 216 22% 21%;
+  --text-primary: 211 50% 94%;
+  --text-secondary: 214 16% 60%;
+  --accent: 193 90% 58%;
+  --accent2: 254 98% 69%;
+  --success: 145 67% 50%;
+  --warning: 38 100% 56%;
+  --danger: 359 100% 65%;
+  --grid-dot: 0 0% 100%;
+  --shadow-rgb: 220 43% 2%;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -14,14 +48,15 @@ body,
 
 body {
   margin: 0;
-  background-color: #0a0e14;
-  color: #eaf0f6;
+  background-color: hsl(var(--base));
+  color: hsl(var(--text-primary));
   font-family: 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 ::selection {
-  background: rgba(53, 198, 244, 0.3);
+  background: hsl(var(--accent) / 0.3);
 }
 
 /* thin scrollbar, tech feel */
@@ -30,18 +65,18 @@ body {
   height: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #0a0e14;
+  background: hsl(var(--base));
 }
 ::-webkit-scrollbar-thumb {
-  background: #2a3441;
+  background: hsl(var(--border));
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #35c6f4;
+  background: hsl(var(--accent));
 }
 
 .bg-dot-grid {
-  background-image: radial-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+  background-image: radial-gradient(hsl(var(--grid-dot) / 0.12) 1px, transparent 1px);
   background-size: 22px 22px;
 }
 
@@ -61,29 +96,29 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid #35c6f4;
+  outline: 2px solid hsl(var(--accent));
   outline-offset: 2px;
 }
 
-/* Leaflet popup dark theme */
+/* Leaflet popup theme */
 .leaflet-popup-content-wrapper {
-  background: #131A24 !important;
-  color: #EAF0F6 !important;
+  background: hsl(var(--surface)) !important;
+  color: hsl(var(--text-primary)) !important;
   border-radius: 12px !important;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.5) !important;
+  box-shadow: 0 8px 24px hsl(var(--shadow-rgb) / 0.24) !important;
 }
 .leaflet-popup-content {
   margin: 12px 16px !important;
 }
 .leaflet-popup-tip {
-  background: #131A24 !important;
+  background: hsl(var(--surface)) !important;
   box-shadow: none !important;
 }
 .leaflet-popup-close-button {
-  color: #8896A6 !important;
+  color: hsl(var(--text-secondary)) !important;
 }
 .leaflet-container {
-  background: #0A0E14 !important;
+  background: hsl(var(--base)) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
