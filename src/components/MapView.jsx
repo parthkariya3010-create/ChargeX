@@ -191,25 +191,23 @@ export default function MapView({ stations }) {
           return (
             <Marker key={s.id} position={[s.latitude, s.longitude]} icon={stationIcon(s.status)}>
               <Popup>
-                <div className="min-w-[200px]" style={{ fontFamily: 'Inter, sans-serif' }}>
-                  <p className="mb-0.5 text-sm font-semibold" style={{ color: '#EAF0F6' }}>{s.name}</p>
-                  <p className="text-xs" style={{ color: '#8896A6' }}>{s.address}</p>
-                  <div className="mt-1.5 flex items-center gap-3 text-xs" style={{ color: '#8896A6' }}>
+                <div className="min-w-[200px]">
+                  <p className="mb-0.5 text-sm font-semibold text-text-primary">{s.name}</p>
+                  <p className="text-xs text-text-secondary">{s.address}</p>
+                  <div className="mt-1.5 flex items-center gap-3 text-xs text-text-secondary">
                     {s.distanceKm ? <span>{s.distanceKm} km</span> : null}
                     {etaMin ? <span>&#9200; ~{etaMin} min (35 km/h)</span> : null}
                   </div>
                   <div className="mt-2.5 flex gap-2">
                     <Link
                       to={`/stations/${s.id}`}
-                      className="inline-block rounded-lg px-3 py-1.5 text-xs font-semibold"
-                      style={{ background: '#35C6F4', color: '#0A0E14' }}
+                      className="inline-block rounded-lg bg-accent px-3 py-1.5 text-xs font-semibold text-base transition-opacity hover:opacity-90"
                     >
                       View details
                     </Link>
                     <button
                       onClick={() => handleGetDirections(s)}
-                      className="inline-flex items-center gap-1 rounded-lg border px-3 py-1.5 text-xs font-semibold"
-                      style={{ borderColor: '#35C6F4', color: '#35C6F4', background: 'transparent' }}
+                      className="inline-flex items-center gap-1 rounded-lg border border-accent bg-transparent px-3 py-1.5 text-xs font-semibold text-accent transition-opacity hover:opacity-80"
                     >
                       <Navigation size={12} />
                       Directions

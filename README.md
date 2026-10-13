@@ -127,3 +127,16 @@ CHARGEX/
 | Name | Roll Number |
 | :--- | :--- |
 | Parth Kariya | VU2F2425052 |
+
+---
+
+## ✨ Features Summary
+
+- **Interactive Map**: Browse EV charging stations across India on an interactive OpenStreetMap view.
+- **Real-Time Availability**: Live port availability (available / waiting / full with real-time wait estimation).
+- **Slot Booking**: Book charging slots and manage upcoming and past charging reservations.
+- **Driver Profile**: Vehicle registry, connector matching, and history tracking.
+- **Admin Dashboard**: Full CRUD management of stations, ports, tariffs, and network statistics.
+- **Mobile App**: Cross-platform Flutter mobile client with digital QR ticketing.
+- **Theme Switching**: Dark / Light / System preference mode with theme switcher.
+

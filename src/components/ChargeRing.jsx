@@ -1,9 +1,9 @@
 import { STATUS } from '../services/api'
 
 const COLORS = {
-  [STATUS.AVAILABLE]: '#2ED573',
-  [STATUS.WAITING]: '#FFB020',
-  [STATUS.FULL]: '#FF4D4F',
+  [STATUS.AVAILABLE]: 'hsl(var(--success))',
+  [STATUS.WAITING]: 'hsl(var(--warning))',
+  [STATUS.FULL]: 'hsl(var(--danger))',
 }
 
 // Draws an arc gauge: fraction of ports that are free right now.
@@ -23,7 +23,7 @@ export default function ChargeRing({ ports, size = 56 }) {
   return (
     <div className="relative shrink-0" style={{ width: size, height: size }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} className="-rotate-90">
-        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="#2A3441" strokeWidth={stroke} />
+        <circle cx={size / 2} cy={size / 2} r={r} fill="none" stroke="hsl(var(--border))" strokeWidth={stroke} />
         <circle
           cx={size / 2}
           cy={size / 2}
