@@ -11,6 +11,7 @@ export default function Signup() {
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
+  const [role, setRole] = useState('DRIVER')
   const [error, setError] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
@@ -19,8 +20,12 @@ export default function Signup() {
     setError('')
     setSubmitting(true)
     try {
-      await signup(name, email, password, phone)
-      navigate('/')
+      await signup(name, email, password, phone, role)
+      if (role === 'ADMIN' || role === 'HOST') {
+        navigate('/admin')
+      } else {
+        navigate('/')
+      }
     } catch (err) {
       setError(err.message)
     } finally {
@@ -29,13 +34,13 @@ export default function Signup() {
   }
 
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-5">
+    <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-5 py-10">
       <div className="mb-8 flex flex-col items-center text-center">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent shadow-glow">
           <Zap size={24} strokeWidth={2.5} />
         </div>
         <h1 className="mt-4 font-display text-2xl font-semibold text-text-primary">Create account</h1>
-        <p className="mt-1 text-sm text-text-secondary">Join ChargeGrid to book charging slots</p>
+        <p className="mt-1 text-sm text-text-secondary">Join CHARGEX to book charging slots</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -44,6 +49,30 @@ export default function Signup() {
             {error}
           </div>
         )}
+
+        <div>
+          <label className="block text-xs font-medium text-text-secondary mb-1.5">Account Type</label>
+          <div className="grid grid-cols-3 gap-1.5 rounded-xl border border-border bg-surface p-1">
+            {[
+              { id: 'DRIVER', label: 'Driver' },
+              { id: 'HOST', label: 'Host' },
+              { id: 'ADMIN', label: 'Admin' },
+            ].map((r) => (
+              <button
+                type="button"
+                key={r.id}
+                onClick={() => setRole(r.id)}
+                className={`rounded-lg py-1.5 text-xs font-medium transition-colors ${
+                  role === r.id
+                    ? 'bg-accent/15 text-accent font-semibold'
+                    : 'text-text-secondary hover:text-text-primary'
+                }`}
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
+        </div>
 
         <label className="block text-xs font-medium text-text-secondary">
           Full name

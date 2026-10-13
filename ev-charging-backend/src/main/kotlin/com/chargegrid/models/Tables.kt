@@ -10,6 +10,7 @@ object Users : Table("users") {
     val email = varchar("email", 255).uniqueIndex()
     val phone = varchar("phone", 20).nullable()
     val passwordHash = varchar("password_hash", 255)
+    val role = varchar("role", 20).default("DRIVER") // ADMIN, HOST, DRIVER
     val createdAt = datetime("created_at").clientDefault { LocalDateTime.now() }
     val updatedAt = datetime("updated_at").clientDefault { LocalDateTime.now() }
 
@@ -37,6 +38,7 @@ object Stations : Table("stations") {
     val longitude = decimal("longitude", 10, 7).nullable()
     val distanceKm = decimal("distance_km", 5, 2).nullable()
     val rating = decimal("rating", 2, 1).nullable()
+    val hostId = long("host_id").references(Users.id).nullable()
     val createdAt = datetime("created_at").clientDefault { LocalDateTime.now() }
 
     override val primaryKey = PrimaryKey(id)

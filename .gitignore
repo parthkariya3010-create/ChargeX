@@ -3,7 +3,22 @@ dist
 .env
 .DS_Store
 *.log
+.vscode/
+
+# Kotlin / Gradle
 ev-charging-backend/build/
 ev-charging-backend/.gradle/
+ev-charging-backend/bin/
 ev-charging-backend/gradle/wrapper/gradle-wrapper.jar
+bin/
+
+# Flutter / Dart
+chargex_mobile/.dart_tool/
+chargex_mobile/build/
+chargex_mobile/.flutter-plugins
+chargex_mobile/.flutter-plugins-dependencies
+chargex_mobile/.packages
+chargex_mobile/.pub-cache/
+chargex_mobile/.pub/
+
 *.zip

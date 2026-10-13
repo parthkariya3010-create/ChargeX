@@ -6,11 +6,21 @@ import MyBookings from './pages/MyBookings'
 import Profile from './pages/Profile'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
+import AdminDashboard from './pages/admin/AdminDashboard'
+import ManageStations from './pages/admin/ManageStations'
+import ManageBookings from './pages/admin/ManageBookings'
 import { useAuth } from './context/AuthContext'
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth()
   if (!isAuthenticated) return <Navigate to="/login" replace />
+  return children
+}
+
+function AdminRoute({ children }) {
+  const { isAuthenticated, isStaff } = useAuth()
+  if (!isAuthenticated) return <Navigate to="/login" replace />
+  if (!isStaff) return <Navigate to="/" replace />
   return children
 }
 
@@ -40,6 +50,32 @@ export default function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+
+          {/* Admin / Host Routes */}
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/stations"
+            element={
+              <AdminRoute>
+                <ManageStations />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/bookings"
+            element={
+              <AdminRoute>
+                <ManageBookings />
+              </AdminRoute>
+            }
+          />
         </Routes>
       </main>
     </div>

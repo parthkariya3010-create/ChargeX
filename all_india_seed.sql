@@ -1,8 +1,81 @@
 -- ============================================================
 -- CHARGEX - All India EV Charging Stations
--- Adds stations across all major Indian cities
--- Skips stations that already exist in the database
+-- Complete Database Schema & Seed Data
 -- ============================================================
+
+CREATE DATABASE IF NOT EXISTS chargegrid;
+USE chargegrid;
+
+-- Create tables if not already created
+CREATE TABLE IF NOT EXISTS users (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    phone VARCHAR(20) NULL,
+    password_hash VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL DEFAULT 'DRIVER',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS vehicles (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    make VARCHAR(50) NULL,
+    model VARCHAR(50) NULL,
+    reg_number VARCHAR(20) NULL,
+    connector_type VARCHAR(20) NULL,
+    is_primary BOOLEAN NOT NULL DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS stations (
+    id VARCHAR(20) PRIMARY KEY,
+    name VARCHAR(200) NOT NULL,
+    address TEXT NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    latitude DECIMAL(10, 7) NULL,
+    longitude DECIMAL(10, 7) NULL,
+    distance_km DECIMAL(5, 2) NULL,
+    rating DECIMAL(2, 1) NULL,
+    host_id BIGINT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (host_id) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE IF NOT EXISTS station_amenities (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    station_id VARCHAR(20) NOT NULL,
+    amenity VARCHAR(50) NOT NULL,
+    FOREIGN KEY (station_id) REFERENCES stations(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS ports (
+    id VARCHAR(20) NOT NULL,
+    station_id VARCHAR(20) NOT NULL,
+    type VARCHAR(20) NOT NULL,
+    power_kw INT NOT NULL,
+    price_per_kwh DECIMAL(5, 2) NOT NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'available',
+    wait_mins INT NOT NULL DEFAULT 0,
+    PRIMARY KEY (id, station_id),
+    FOREIGN KEY (station_id) REFERENCES stations(id) ON DELETE CASCADE
+);
+
+CREATE TABLE IF NOT EXISTS bookings (
+    id VARCHAR(30) PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    station_id VARCHAR(20) NOT NULL,
+    port_id VARCHAR(20) NOT NULL,
+    date DATE NOT NULL,
+    start_time TIME NOT NULL,
+    vehicle_reg_number VARCHAR(20) NULL,
+    status VARCHAR(20) NOT NULL DEFAULT 'upcoming',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (station_id) REFERENCES stations(id) ON DELETE CASCADE
+);
 
 -- ============================================================
 -- Mumbai stations

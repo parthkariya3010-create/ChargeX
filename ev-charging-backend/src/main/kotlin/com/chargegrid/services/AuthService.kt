@@ -10,9 +10,13 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class AuthService {
 
     fun signup(request: SignupRequest): AuthResponse = transaction {
-        val existing = Users.selectAll().where { Users.email eq request.email }.singleOrNull()
+        val existing = Users.selectAll().where { Users.email eq request.email.lowercase() }.singleOrNull()
         if (existing != null) {
             throw IllegalArgumentException("Email already registered")
+        }
+
+        val userRole = (request.role?.uppercase() ?: "DRIVER").let {
+            if (it in listOf("ADMIN", "HOST", "DRIVER")) it else "DRIVER"
         }
 
         Users.insert { row ->
@@ -20,10 +24,11 @@ class AuthService {
             row[Users.email] = request.email.lowercase()
             row[Users.phone] = request.phone
             row[Users.passwordHash] = SecurityConfig.hashPassword(request.password)
+            row[Users.role] = userRole
         }
         val userId = Users.selectAll().where { Users.email eq request.email.lowercase() }.single()[Users.id]
 
-        val token = SecurityConfig.generateToken(userId, request.email.lowercase())
+        val token = SecurityConfig.generateToken(userId, request.email.lowercase(), userRole)
 
         AuthResponse(
             token = token,
@@ -31,7 +36,8 @@ class AuthService {
                 id = userId,
                 name = request.name,
                 email = request.email.lowercase(),
-                phone = request.phone
+                phone = request.phone,
+                role = userRole
             )
         )
     }
@@ -45,7 +51,8 @@ class AuthService {
         }
 
         val userId = user[Users.id]
-        val token = SecurityConfig.generateToken(userId, request.email.lowercase())
+        val userRole = user[Users.role]
+        val token = SecurityConfig.generateToken(userId, request.email.lowercase(), userRole)
 
         val vehicle = Vehicles.selectAll()
             .where { (Vehicles.userId eq userId) and (Vehicles.isPrimary eq true) }
@@ -58,6 +65,7 @@ class AuthService {
                 name = user[Users.name],
                 email = user[Users.email],
                 phone = user[Users.phone],
+                role = userRole,
                 vehicle = vehicle?.let { v ->
                     VehicleResponse(
                         make = v[Vehicles.make],

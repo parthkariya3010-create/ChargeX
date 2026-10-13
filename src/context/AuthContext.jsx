@@ -35,10 +35,10 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
-  const signup = useCallback(async (name, email, password, phone) => {
+  const signup = useCallback(async (name, email, password, phone, role = 'DRIVER') => {
     setLoading(true)
     try {
-      const data = await signupRequest(name, email, password, phone)
+      const data = await signupRequest(name, email, password, phone, role)
       localStorage.setItem(TOKEN_KEY, data.token)
       localStorage.setItem(USER_KEY, JSON.stringify(data.user))
       setToken(data.token)
@@ -56,8 +56,27 @@ export function AuthProvider({ children }) {
     setUser(null)
   }, [])
 
+  const role = user?.role || 'DRIVER'
+  const isAdmin = role === 'ADMIN'
+  const isHost = role === 'HOST'
+  const isStaff = isAdmin || isHost
+
   return (
-    <AuthContext.Provider value={{ user, token, isAuthenticated, loading, login, signup, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        token,
+        role,
+        isAdmin,
+        isHost,
+        isStaff,
+        isAuthenticated,
+        loading,
+        login,
+        signup,
+        logout,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

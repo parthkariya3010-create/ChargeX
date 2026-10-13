@@ -23,16 +23,23 @@ object SecurityConfig {
     fun verifyPassword(password: String, hash: String): Boolean =
         BCrypt.verifyer().verify(password.toCharArray(), hash).verified
 
-    fun generateToken(userId: Long, email: String): String =
+    fun generateToken(userId: Long, email: String, role: String = "DRIVER"): String =
         JWT.create()
             .withIssuer(ISSUER)
             .withAudience(AUDIENCE)
             .withSubject(userId.toString())
             .withClaim("email", email)
+            .withClaim("role", role)
             .withIssuedAt(Date())
             .withExpiresAt(Date(System.currentTimeMillis() + EXPIRES_HOURS * 3600 * 1000))
             .sign(algorithm)
 }
+
+fun ApplicationCall.getUserId(): Long? =
+    principal<JWTPrincipal>()?.payload?.subject?.toLongOrNull()
+
+fun ApplicationCall.getUserRole(): String =
+    principal<JWTPrincipal>()?.payload?.getClaim("role")?.asString() ?: "DRIVER"
 
 fun Application.configureSecurity() {
     install(Authentication) {

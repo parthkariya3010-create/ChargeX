@@ -82,6 +82,49 @@ export async function updateProfile(profile) {
   return request('PUT', '/api/profile', profile)
 }
 
+// ---- Admin & Station Management ---------------------------------------
+
+export async function getAdminStats() {
+  return request('GET', '/api/admin/stats')
+}
+
+export async function getAdminBookings(status) {
+  const query = status ? `?status=${status}` : ''
+  return request('GET', `/api/admin/bookings${query}`)
+}
+
+export async function updateBookingStatus(id, status) {
+  return request('PATCH', `/api/admin/bookings/${id}/status`, { status })
+}
+
+export async function getAdminUsers() {
+  return request('GET', '/api/admin/users')
+}
+
+export async function createStation(station) {
+  return request('POST', '/api/stations', station)
+}
+
+export async function updateStation(stationId, station) {
+  return request('PUT', `/api/stations/${stationId}`, station)
+}
+
+export async function deleteStation(stationId) {
+  return request('DELETE', `/api/stations/${stationId}`)
+}
+
+export async function createPort(stationId, port) {
+  return request('POST', `/api/stations/${stationId}/ports`, port)
+}
+
+export async function updatePort(stationId, portId, port) {
+  return request('PUT', `/api/stations/${stationId}/ports/${portId}`, port)
+}
+
+export async function deletePort(stationId, portId) {
+  return request('DELETE', `/api/stations/${stationId}/ports/${portId}`)
+}
+
 // ---- Status helper (used by frontend components) -----------------------
 
 export const STATUS = {

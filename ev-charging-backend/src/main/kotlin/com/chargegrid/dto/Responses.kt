@@ -14,6 +14,7 @@ data class UserResponse(
     val name: String,
     val email: String,
     val phone: String? = null,
+    val role: String = "DRIVER",
     val vehicle: VehicleResponse? = null
 )
 
@@ -35,10 +36,24 @@ data class StationResponse(
     val longitude: Double? = null,
     val distanceKm: Double? = null,
     val rating: Double? = null,
+    val hostId: Long? = null,
     val status: String,
     val waitMins: Int = 0,
     val amenities: List<String> = emptyList(),
     val ports: List<PortResponse> = emptyList()
+)
+
+@Serializable
+data class AdminStatsResponse(
+    val totalStations: Long,
+    val totalPorts: Long,
+    val totalBookings: Long,
+    val upcomingBookings: Long,
+    val completedBookings: Long,
+    val cancelledBookings: Long,
+    val totalUsers: Long,
+    val totalDrivers: Long,
+    val totalHosts: Long
 )
 
 @Serializable

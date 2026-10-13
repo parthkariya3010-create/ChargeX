@@ -17,8 +17,12 @@ export default function Login() {
     setError('')
     setSubmitting(true)
     try {
-      await login(email, password)
-      navigate('/')
+      const res = await login(email, password)
+      if (res?.user?.role === 'ADMIN' || res?.user?.role === 'HOST') {
+        navigate('/admin')
+      } else {
+        navigate('/')
+      }
     } catch (err) {
       setError(err.message)
     } finally {
@@ -26,14 +30,47 @@ export default function Login() {
     }
   }
 
+  function fillDemo(demoEmail, demoPassword) {
+    setEmail(demoEmail)
+    setPassword(demoPassword)
+    setError('')
+  }
+
   return (
-    <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-5">
+    <div className="mx-auto flex min-h-[70vh] max-w-sm flex-col justify-center px-5 py-10">
       <div className="mb-8 flex flex-col items-center text-center">
         <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-accent/15 text-accent shadow-glow">
           <Zap size={24} strokeWidth={2.5} />
         </div>
         <h1 className="mt-4 font-display text-2xl font-semibold text-text-primary">Welcome back</h1>
-        <p className="mt-1 text-sm text-text-secondary">Sign in to your ChargeGrid account</p>
+        <p className="mt-1 text-sm text-text-secondary">Sign in to your CHARGEX account</p>
+      </div>
+
+      <div className="mb-4 rounded-xl border border-border bg-surface p-3 text-xs">
+        <p className="font-mono text-[11px] text-text-secondary uppercase tracking-wider mb-2">Quick Demo Fill</p>
+        <div className="flex gap-2">
+          <button
+            type="button"
+            onClick={() => fillDemo('admin@chargex.in', 'admin123')}
+            className="flex-1 rounded-lg border border-accent2/30 bg-accent2/10 py-1.5 font-medium text-accent2 hover:bg-accent2/20"
+          >
+            Admin
+          </button>
+          <button
+            type="button"
+            onClick={() => fillDemo('host@chargex.in', 'host123')}
+            className="flex-1 rounded-lg border border-accent/30 bg-accent/10 py-1.5 font-medium text-accent hover:bg-accent/20"
+          >
+            Host
+          </button>
+          <button
+            type="button"
+            onClick={() => fillDemo('driver@chargex.in', 'driver123')}
+            className="flex-1 rounded-lg border border-border bg-elevated py-1.5 font-medium text-text-primary hover:bg-elevated2"
+          >
+            Driver
+          </button>
+        </div>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4">

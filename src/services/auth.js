@@ -24,10 +24,10 @@ export async function loginRequest(email, password) {
   })
 }
 
-export async function signupRequest(name, email, password, phone) {
+export async function signupRequest(name, email, password, phone, role = 'DRIVER') {
   return fetchJson(`${BASE_URL}/api/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, password, phone }),
+    body: JSON.stringify({ name, email, password, phone, role }),
   })
 }
