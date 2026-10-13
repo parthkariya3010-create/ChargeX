@@ -9,7 +9,6 @@ dist
 ev-charging-backend/build/
 ev-charging-backend/.gradle/
 ev-charging-backend/bin/
-ev-charging-backend/gradle/wrapper/gradle-wrapper.jar
 bin/
 
 # Flutter / Dart
