@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: chargex-backend
+    runtime: docker
+    dockerContext: .
+    dockerfilePath: Dockerfile
+    plan: free
+    envVars:
+      - key: PORT
+        value: 8080
