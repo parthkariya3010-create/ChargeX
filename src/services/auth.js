@@ -1,11 +1,19 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
+const rawBase = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || ''
+const BASE_URL = rawBase.replace(/\/api\/?$/, '')
 
 async function fetchJson(url, options) {
   try {
     const res = await fetch(url, options)
     if (!res.ok) {
-      const err = await res.json().catch(() => ({}))
-      throw new Error(err.error || `Request failed (${res.status})`)
+      const text = await res.text().catch(() => '')
+      let errorMsg = `Request failed (${res.status})`
+      try {
+        const err = JSON.parse(text)
+        errorMsg = err.error || errorMsg
+      } catch {
+        if (text) errorMsg = text
+      }
+      throw new Error(errorMsg)
     }
     return res.json()
   } catch (e) {

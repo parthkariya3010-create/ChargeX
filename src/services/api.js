@@ -1,4 +1,5 @@
-const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? ''
+const rawBase = import.meta.env.VITE_API_BASE_URL || import.meta.env.VITE_API_URL || ''
+const BASE_URL = rawBase.replace(/\/api\/?$/, '')
 
 function getToken() {
   try {
@@ -21,8 +22,15 @@ async function request(method, path, body) {
     })
 
     if (!res.ok) {
-      const err = await res.json().catch(() => ({ error: 'Request failed' }))
-      throw new Error(err.error || `HTTP ${res.status}`)
+      const text = await res.text().catch(() => '')
+      let errorMsg = `HTTP ${res.status}`
+      try {
+        const err = JSON.parse(text)
+        errorMsg = err.error || errorMsg
+      } catch {
+        if (text) errorMsg = text
+      }
+      throw new Error(errorMsg)
     }
 
     return res.json()
