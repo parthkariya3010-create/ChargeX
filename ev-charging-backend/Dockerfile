@@ -11,5 +11,6 @@ COPY --from=builder /app/build/install/ev-charging-backend .
 
 EXPOSE 8080
 ENV PORT=8080
+ENV JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75.0 -Xmx350m -Xms128m"
 
 CMD ["bin/ev-charging-backend"]

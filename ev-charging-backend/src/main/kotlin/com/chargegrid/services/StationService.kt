@@ -15,10 +15,27 @@ class StationService {
     private val STATUS_FULL = "full"
 
     fun getStations(userLat: Double? = null, userLng: Double? = null): List<StationResponse> = transaction {
+        // Bulk fetch all ports grouped by station
+        val portsByStation = Ports.selectAll().map { row ->
+            row[Ports.stationId] to PortResponse(
+                id = row[Ports.id],
+                type = row[Ports.type],
+                powerKw = row[Ports.powerKw],
+                pricePerKwh = row[Ports.pricePerKwh].toDouble(),
+                status = row[Ports.status],
+                waitMins = row[Ports.waitMins]
+            )
+        }.groupBy({ it.first }, { it.second })
+
+        // Bulk fetch all amenities grouped by station
+        val amenitiesByStation = StationAmenities.selectAll().map { row ->
+            row[StationAmenities.stationId] to row[StationAmenities.amenity]
+        }.groupBy({ it.first }, { it.second })
+
         Stations.selectAll().map { row ->
             val stationId = row[Stations.id]
-            val ports = getPortsForStation(stationId)
-            val amenities = getAmenitiesForStation(stationId)
+            val ports = portsByStation[stationId] ?: emptyList()
+            val amenities = amenitiesByStation[stationId] ?: emptyList()
             val (status, waitMins) = deriveStationStatus(ports)
 
             val lat = row[Stations.latitude]?.toDouble()
