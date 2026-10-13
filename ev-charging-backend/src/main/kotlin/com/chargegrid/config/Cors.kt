@@ -14,7 +14,7 @@ fun Application.configureCORS() {
         call.response.header(HttpHeaders.AccessControlAllowCredentials, "true")
 
         if (call.request.httpMethod == HttpMethod.Options) {
-            call.response.header(HttpHeaders.AccessControlAllowMethods, "GET, POST, PUT, DELETE, OPTIONS")
+            call.response.header(HttpHeaders.AccessControlAllowMethods, "GET, POST, PUT, PATCH, DELETE, OPTIONS")
             call.response.header(HttpHeaders.AccessControlAllowHeaders, "Content-Type, Authorization")
             call.response.header(HttpHeaders.AccessControlMaxAge, "86400")
             call.respondText("", status = HttpStatusCode.OK)
