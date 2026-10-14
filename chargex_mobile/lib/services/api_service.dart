@@ -6,8 +6,8 @@ import '../models/booking.dart';
 import '../models/user.dart';
 
 class ApiService {
-  // Use 10.0.2.2 for Android emulator, or localhost / LAN IP
-  static String baseUrl = 'http://localhost:8081';
+  // Production live backend on Render (connects directly on mobile phones & emulators)
+  static String baseUrl = 'https://chargex-1.onrender.com';
 
   static const String _tokenKey = 'cg_mobile_token';
 

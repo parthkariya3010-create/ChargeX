@@ -37,7 +37,6 @@ class ChargeXApp extends StatelessWidget {
         colorScheme: const ColorScheme.dark(
           primary: Color(0xFF35C6F4),
           surface: Color(0xFF131A24),
-          background: const Color(0xFF0A0E14),
         ),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF0A0E14),

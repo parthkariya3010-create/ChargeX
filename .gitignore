@@ -21,3 +21,6 @@ chargex_mobile/.pub-cache/
 chargex_mobile/.pub/
 
 *.zip
+*.apk
+chargex_mobile/android/.gradle/
+chargex_mobile/android/local.properties
